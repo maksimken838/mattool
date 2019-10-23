@@ -21,13 +21,19 @@ class Matrix:
         for i in range(self.rows):
            self.matrix[b][i] = float(self.matrix[b][i]) + float(self.matrix[a][i]) * c
 
+    def swap(self, a, b):
+        x = []
+        x = self.matrix[a]
+        self.matrix[a] = self.matrix[b]
+        self.matrix[b] = x
+
     def isSquare(self):
         if self.strings == self.rows:
             return True
         else:
             return False
 
-    def augment(self):
+    def addunit(self):
         if self.isSquare():
             for i in range(self.strings):
                 for j in range(self.rows):
@@ -39,6 +45,15 @@ class Matrix:
             self.isAugmented = True
         else:
             print('Error: trying to add identity matrix to matrix which is not square\n')
+
+    def delunit(self):
+        if self.isAugmented:
+            for i in range(self.strings):
+                del self.matrix[i][self.strings : self.rows - 1]
+            self.rows = self.strings
+    
+    def det(self):
+        "some code"
 
     def prt(self):
         self.deflength()
@@ -86,14 +101,16 @@ def console():
         print('\nNow type 3 numbers (What string, to what string, with what multiplier)\n')
         a, b, c = [float(x) for x in input().split()]
         X.add(int(a) - 1, int(b) - 1, c)
-    elif command == 'augment':
-        X.augment()
+    elif command == 'swap':
+        print('\nNow type 2 numbers (Numbers of string that the program should swap)\n')
+        a, b = [int(x) for x in input().split()]
+        X.swap(a - 1, b - 1)
+    elif command == 'addunit' or command == '+unit':
+        X.addunit()
+    elif command == 'delunit' or command == '-unit':
+        X.delunit()
     elif command == 'exit':
         return
-    else:
-        print('Command does not exist')
     console()
-
-
 
 console()
