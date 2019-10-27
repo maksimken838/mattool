@@ -10,7 +10,11 @@ class Matrix:
         self.rows = int(rows)
         self.matrix = matrix
         self.maxlength = 0
-        self.isAugmented = False
+        self.IsAugmented = False
+        self.IsDet = False
+        for i in range(self.strings):
+            for j in range(self.rows):
+                self.matrix[i][j] = float(self.matrix[i][j])
 
     def deflength(self):
         for i in range(int(self.strings)):
@@ -27,14 +31,14 @@ class Matrix:
         self.matrix[a] = self.matrix[b]
         self.matrix[b] = x
 
-    def isSquare(self):
+    def IsSquare(self):
         if self.strings == self.rows:
             return True
         else:
             return False
 
     def addunit(self):
-        if self.isSquare():
+        if self.IsSquare():
             for i in range(self.strings):
                 for j in range(self.rows):
                     if i == j:
@@ -42,18 +46,25 @@ class Matrix:
                     else:
                         self.matrix[i].append(0)
             self.rows = self.rows * 2
-            self.isAugmented = True
+            self.IsAugmented = True
         else:
             print('Error: trying to add identity matrix to matrix which is not square\n')
 
     def delunit(self):
-        if self.isAugmented:
+        if self.IsAugmented:
             for i in range(self.strings):
                 del self.matrix[i][self.strings : self.rows - 1]
             self.rows = self.strings
     
     def det(self):
-        "some code"
+        if self.IsSquare():
+            self.IsDet = True
+            if self.strings == 2:
+                return self.matrix[0][0] * self.matrix[1][1] - self.matrix[0][1] * self.matrix[1][0]
+            elif self.strings == 3:
+                "some code"
+            else:
+                "some recursive code"
 
     def prt(self):
         self.deflength()
@@ -61,12 +72,14 @@ class Matrix:
         for i in range(self.strings):
             for j in range(self.rows):
                 if j == 0:
-                    print('(', end = ' ')
-                elif self.isAugmented and j == self.strings:
+                    print('|', end = ' ') if self.IsDet else print('(', end = ' ')
+                elif self.IsAugmented and j == self.strings:
                     print('|', end = ' ')
                 print(str(self.matrix[i][j]).rjust(self.maxlength), end = ' ')
                 if j == self.rows - 1:
-                    print(')', end = '\n')
+                    print('|', end = '\n') if self.IsDet else print(')', end = '\n')
+        if self.IsDet:
+            print('\n|A| = ' + str(self.det()))
         print('\nYou still can use commands\n')
 
 "The end of Matrix class"
@@ -109,6 +122,8 @@ def console():
         X.addunit()
     elif command == 'delunit' or command == '-unit':
         X.delunit()
+    elif command == 'det':
+        X.det()
     elif command == 'exit':
         return
     console()
