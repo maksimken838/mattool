@@ -62,7 +62,7 @@ class Matrix:
             if self.strings == 2:
                 return self.matrix[0][0] * self.matrix[1][1] - self.matrix[0][1] * self.matrix[1][0]
             elif self.strings == 3:
-                "some code"
+                return '(' + str(self.matrix[0][0] * self.matrix[1][1] * self.matrix[2][2]) + ') + (' + str(self.matrix[0][1] * self.matrix[1][2] * self.matrix[2][0]) + ') + (' + str(self.matrix[0][2] * self.matrix[1][0] * self.matrix[2][1]) + ') - (' + str(self.matrix[0][2] * self.matrix[1][1] * self.matrix[2][0]) + ') - (' + str(self.matrix[0][0] * self.matrix[1][2] * self.matrix[2][1]) + ') - (' + str(self.matrix[1][0] * self.matrix[0][1] * self.matrix[2][2]) + ') = ' + str(self.matrix[0][0] * self.matrix[1][1] * self.matrix[2][2] + self.matrix[0][1] * self.matrix[1][2] * self.matrix[2][0] + self.matrix[0][2] * self.matrix[1][0] * self.matrix[2][1] - self.matrix[0][2] * self.matrix[1][1] * self.matrix[2][0] - self.matrix[0][0] * self.matrix[1][2] * self.matrix[2][1] - self.matrix[1][0] * self.matrix[0][1] * self.matrix[2][2])
             else:
                 "some recursive code"
 
@@ -72,12 +72,12 @@ class Matrix:
         for i in range(self.strings):
             for j in range(self.rows):
                 if j == 0:
-                    print('|', end = ' ') if self.IsDet else print('(', end = ' ')
+                    print('(', end = ' ')
                 elif self.IsAugmented and j == self.strings:
                     print('|', end = ' ')
                 print(str(self.matrix[i][j]).rjust(self.maxlength), end = ' ')
                 if j == self.rows - 1:
-                    print('|', end = '\n') if self.IsDet else print(')', end = '\n')
+                    print(')', end = '\n')
         if self.IsDet:
             print('\n|A| = ' + str(self.det()))
         print('\nYou still can use commands\n')
@@ -92,7 +92,7 @@ def clear(name):
 
 def clear_console():
     clear(name)
-    print('You are in the command mode now, please type here your commands (If you don\'t know what to do just type \'help\')\n')
+    print('MATTOOL - Easy to use (I hope it is) console matrix manipulation tool\n')
     if 'X' in globals():
         X.prt()
     else:
