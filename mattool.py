@@ -12,10 +12,7 @@ class Matrix:
         self.maxlength = 0
         self.IsAugmented = False
         self.IsDet = False
-        for i in range(self.strings):
-            for j in range(self.rows):
-                self.matrix[i][j] = float(self.matrix[i][j])
-
+    
     def deflength(self):
         for i in range(int(self.strings)):
             for j in range(self.rows):
@@ -30,6 +27,10 @@ class Matrix:
         x = self.matrix[a]
         self.matrix[a] = self.matrix[b]
         self.matrix[b] = x
+
+    def multiply(self, a, b):
+        for i in range(self.rows):
+            self.matrix[a][i] *= b
 
     def IsSquare(self):
         if self.strings == self.rows:
@@ -58,7 +59,7 @@ class Matrix:
     
     def det(self):
         if self.IsSquare():
-            self.IsDet = True
+            "self.IsDet = True"
             if self.strings == 2:
                 return self.matrix[0][0] * self.matrix[1][1] - self.matrix[0][1] * self.matrix[1][0]
             elif self.strings == 3:
@@ -67,6 +68,13 @@ class Matrix:
                 "some recursive code"
 
     def prt(self):
+        for i in range(self.strings):
+            for j in range(self.rows):
+                if float(self.matrix[i][j]) == int(self.matrix[i][j]):
+                    self.matrix[i][j] = int(self.matrix[i][j])
+                else:
+                    self.matrix[i][j] = float(self.matrix[i][j])
+
         self.deflength()
         print('This is your matrix')
         for i in range(self.strings):
@@ -78,8 +86,7 @@ class Matrix:
                 print(str(self.matrix[i][j]).rjust(self.maxlength), end = ' ')
                 if j == self.rows - 1:
                     print(')', end = '\n')
-        if self.IsDet:
-            print('\n|A| = ' + str(self.det()))
+        print('\n|A| = ' + str(self.det()))
         print('\nYou still can use commands\n')
 
 "The end of Matrix class"
@@ -101,29 +108,31 @@ def clear_console():
 def console():
     global X
     clear_console()
-    command = input()
+    command = input('--> ')
     if command == 'input':
         print('\nNow you should define size of the matrix - type two numbers, first for number of columns and second for number of rows\n')
-        n, m = [int(x) for x in input().split()]
+        n, m = [int(x) for x in input('--> ').split()]
         print('\nNow just type your matrix line by line\n')
         A = []
         for i in range(n):
-            A.append(list(input().split()))
+            A.append(list(input('--> ').split()))
         X = Matrix(n, m, A)
     elif command == 'add':
         print('\nNow type 3 numbers (What string, to what string, with what multiplier)\n')
-        a, b, c = [float(x) for x in input().split()]
+        a, b, c = [float(x) for x in input('--> ').split()]
         X.add(int(a) - 1, int(b) - 1, c)
     elif command == 'swap':
         print('\nNow type 2 numbers (Numbers of string that the program should swap)\n')
-        a, b = [int(x) for x in input().split()]
+        a, b = [int(x) for x in input('--> ').split()]
         X.swap(a - 1, b - 1)
+    elif command == 'mult' or command == 'multiply':
+        print('\nNow type 2 numbers, what string to multiply and the actual multiplier\n')
+        a, b = [float(x) for x in input('--> ').split()]
+        X.multiply(int(a) - 1, b)
     elif command == 'addunit' or command == '+unit':
         X.addunit()
     elif command == 'delunit' or command == '-unit':
         X.delunit()
-    elif command == 'det':
-        X.det()
     elif command == 'exit':
         return
     console()
