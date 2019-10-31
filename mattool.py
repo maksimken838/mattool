@@ -61,11 +61,45 @@ class Matrix:
         if self.IsSquare():
             "self.IsDet = True"
             if self.strings == 2:
+                a = self.matrix
+                res = []
+                res[0] = a[0][0] * a[1][1]
+                res[1] = a[0][1] * a[1][0]
                 return self.matrix[0][0] * self.matrix[1][1] - self.matrix[0][1] * self.matrix[1][0]
             elif self.strings == 3:
-                return '(' + str(self.matrix[0][0] * self.matrix[1][1] * self.matrix[2][2]) + ') + (' + str(self.matrix[0][1] * self.matrix[1][2] * self.matrix[2][0]) + ') + (' + str(self.matrix[0][2] * self.matrix[1][0] * self.matrix[2][1]) + ') - (' + str(self.matrix[0][2] * self.matrix[1][1] * self.matrix[2][0]) + ') - (' + str(self.matrix[0][0] * self.matrix[1][2] * self.matrix[2][1]) + ') - (' + str(self.matrix[1][0] * self.matrix[0][1] * self.matrix[2][2]) + ') = ' + str(self.matrix[0][0] * self.matrix[1][1] * self.matrix[2][2] + self.matrix[0][1] * self.matrix[1][2] * self.matrix[2][0] + self.matrix[0][2] * self.matrix[1][0] * self.matrix[2][1] - self.matrix[0][2] * self.matrix[1][1] * self.matrix[2][0] - self.matrix[0][0] * self.matrix[1][2] * self.matrix[2][1] - self.matrix[1][0] * self.matrix[0][1] * self.matrix[2][2])
+                a = self.matrix
+                res = []
+                res[0] = a[0][0] * a[1][1] * a[2][2]
+                res[1] = a[0][1] * a[1][2] * a[2][0]
+                res[2] = a[0][2] * a[1][0] * a[2][1]
+                res[3] = a[0][2] * a[1][1] * a[2][0]
+                res[4] = a[0][0] * a[1][2] * a[2][1]
+                res[5] = a[0][1] * a[1][0] * a[2][2]
+
+                return '(' + str(self.matrix[0][0] * self.matrix[1][1] * self.matrix[2][2]) + ') + (' + str(self.matrix[0][1] * self.matrix[1][2] * self.matrix[2][0]) + ') + (' + str(self.matrix[0][2] * self.matrix[1][0] * self.matrix[2][1]) + ') - (' + str(self.matrix[0][2] * self.matrix[1][1] * self.matrix[2][0]) + ') - (' + str(self.matrix[0][0] * self.matrix[1][2] * self.matrix[2][1]) + ') - (' + str(self.matrix[1][0] * self.matrix[0][1] * self.matrix[2][2]) + ') = ', (self.matrix[0][0] * self.matrix[1][1] * self.matrix[2][2] + self.matrix[0][1] * self.matrix[1][2] * self.matrix[2][0] + self.matrix[0][2] * self.matrix[1][0] * self.matrix[2][1] - self.matrix[0][2] * self.matrix[1][1] * self.matrix[2][0] - self.matrix[0][0] * self.matrix[1][2] * self.matrix[2][1] - self.matrix[1][0] * self.matrix[0][1] * self.matrix[2][2])
             else:
-                "some recursive code"
+                d = 0
+                s = ''
+                fix = 0
+                for i in range(self.strings):
+                    for j in range(self.rows):
+                        reduced_matrix = []
+                        fix = 0
+                        for k in range(self.strings):
+                            if k != i:
+                                reduced_matrix.append([])
+                                for l in range(self.rows):
+                                    if l != j:
+                                        reduced_matrix[k - fix].append(self.matrix[k][l])
+                                        print('>', reduced_matrix)
+                            else:
+                                fix = 1
+                    a = Matrix(self.strings - 1, self.rows - 1, reduced_matrix)
+                    print(a.strings, a.rows, a.matrix)
+                    s1 = (Matrix(self.strings - 1, self.rows - 1, reduced_matrix).det()) + ' + '
+                    s += s1[0]
+                    d += s1[1]
+                return s, d
 
     def prt(self):
         for i in range(self.strings):
