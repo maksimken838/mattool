@@ -57,28 +57,29 @@ class Matrix:
                 del self.matrix[i][self.strings : self.rows - 1]
             self.rows = self.strings
     
-    def det(self):
+    def det(self, isStr = True, number = 0):
         if self.IsSquare():
             "self.IsDet = True"
             if self.strings == 2:
-                a = self.matrix
+                a = self.matrix[:]
                 res = []
                 res[0] = a[0][0] * a[1][1]
                 res[1] = a[0][1] * a[1][0]
                 return self.matrix[0][0] * self.matrix[1][1] - self.matrix[0][1] * self.matrix[1][0]
             elif self.strings == 3:
-                a = self.matrix
-                res = []
+                a = self.matrix[:]
+                res = [0, 0, 0, 0, 0, 0]
                 res[0] = a[0][0] * a[1][1] * a[2][2]
                 res[1] = a[0][1] * a[1][2] * a[2][0]
                 res[2] = a[0][2] * a[1][0] * a[2][1]
                 res[3] = a[0][2] * a[1][1] * a[2][0]
                 res[4] = a[0][0] * a[1][2] * a[2][1]
                 res[5] = a[0][1] * a[1][0] * a[2][2]
-
-                return '(' + str(self.matrix[0][0] * self.matrix[1][1] * self.matrix[2][2]) + ') + (' + str(self.matrix[0][1] * self.matrix[1][2] * self.matrix[2][0]) + ') + (' + str(self.matrix[0][2] * self.matrix[1][0] * self.matrix[2][1]) + ') - (' + str(self.matrix[0][2] * self.matrix[1][1] * self.matrix[2][0]) + ') - (' + str(self.matrix[0][0] * self.matrix[1][2] * self.matrix[2][1]) + ') - (' + str(self.matrix[1][0] * self.matrix[0][1] * self.matrix[2][2]) + ') = ', (self.matrix[0][0] * self.matrix[1][1] * self.matrix[2][2] + self.matrix[0][1] * self.matrix[1][2] * self.matrix[2][0] + self.matrix[0][2] * self.matrix[1][0] * self.matrix[2][1] - self.matrix[0][2] * self.matrix[1][1] * self.matrix[2][0] - self.matrix[0][0] * self.matrix[1][2] * self.matrix[2][1] - self.matrix[1][0] * self.matrix[0][1] * self.matrix[2][2])
+                s = '(' + str(res[0]) + ') + (' + str(res[1]) + ') + (' + str(res[2]) + ') - (' + str(res[3]) + ') - (' + str(res[4]) + ') - (' + str(res[5]) + ')' 
+                return s, res[0] + res[1] + res[2] - res[3] - res[4] - res[5]
             else:
-                d = 0
+                '''
+                value = 0
                 s = ''
                 fix = 0
                 for i in range(self.strings):
@@ -91,15 +92,48 @@ class Matrix:
                                 for l in range(self.rows):
                                     if l != j:
                                         reduced_matrix[k - fix].append(self.matrix[k][l])
-                                        print('>', reduced_matrix)
                             else:
                                 fix = 1
-                    a = Matrix(self.strings - 1, self.rows - 1, reduced_matrix)
-                    print(a.strings, a.rows, a.matrix)
-                    s1 = (Matrix(self.strings - 1, self.rows - 1, reduced_matrix).det()) + ' + '
-                    s += s1[0]
-                    d += s1[1]
-                return s, d
+                    s1, value1 = (Matrix(self.strings - 1, self.rows - 1, reduced_matrix)).det()
+                    s += '|A|(' + str(i) + ')(' + str(j) + ') + (' + s1 + ' = ' + str(value1) + '\n'
+                    value += value1
+                print(reduced_matrix)
+                return s, value
+                '''
+                return self.Laplace(isStr, number)
+
+    def Laplace(self, isStr = True, number = 0):
+        value = 0
+        result = ''
+        sign = '-'
+        if isStr:
+            for i in range(self.rows):
+                sign = '-' if (i * number) % 2 == 1 else '+'
+                preresult, prevalue = self.submatrix(number, i).det()
+                result += '|A|(' + str(number) + ')(' + str(i) + ') = ' + sign + '( ' + preresult + ' ) = ' + str(prevalue) + '\n'
+                value += prevalue if sign == '+' else -prevalue
+        else:
+            for i in range(self.strings):
+                sign = '-' if (i * number) % 2 == 1 else '+'
+                preresult, prevalue = self.submatrix(i, number).det()
+                result += '|A|(' + str(i) + ')(' + str(number) + ') = ' + sign + '( ' + preresult + ' ) = ' + str(prevalue) + '\n'
+                value += prevalue if sign == '+' else -prevalue
+        return result, value
+
+    def submatrix(self, string, row):
+        submat = list(self.matrix)
+        print(string, row)
+        print(submat, id(submat))
+        print(self.matrix, id(self.matrix))
+        #del submat[0:self.strings][row]
+        for i in range(self.strings):
+            del submat[i][row]
+            print(submat, id(submat))
+            print(self.matrix, id(self.matrix))
+        del submat[string]
+        print(submat)
+        print(self.matrix)
+        return Matrix(self.strings - 1, self.strings - 1, submat)
 
     def prt(self):
         for i in range(self.strings):
@@ -120,7 +154,9 @@ class Matrix:
                 print(str(self.matrix[i][j]).rjust(self.maxlength), end = ' ')
                 if j == self.rows - 1:
                     print(')', end = '\n')
-        print('\n|A| = ' + str(self.det()))
+        s = []
+        s = self.det()
+        print(s[0] + '\t|A| = ' + str(s[1]) + '\n')
         print('\nYou still can use commands\n')
 
 "The end of Matrix class"
