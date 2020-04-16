@@ -144,7 +144,7 @@ class Matrix:
                     self.matrix[i][j] = float(self.matrix[i][j])
 
         self.deflength()
-        print('This is your matrix')
+        #print('This is your matrix')
         for i in range(self.strings):
             for j in range(self.rows):
                 if j == 0:
@@ -156,10 +156,9 @@ class Matrix:
                     print(')', end = '\n')
         s = []
         s = self.det()
-        print(s[0] + '\t|A| = ' + str(s[1]) + '\n')
-        print('\nYou still can use commands\n')
+        #print(s[0] + '\t|A| = ' + str(s[1]) + '\n')
+        #print('\nYou still can use commands\n')
 
-"The end of Matrix class"
 
 def clear(name):
     if name == 'nt':
@@ -187,24 +186,40 @@ def console():
         for i in range(n):
             A.append(list(input('--> ').split()))
         X = Matrix(n, m, A)
+        history.append(['init', [n, m, A]])
+        Mhistory.append(X)
     elif command == 'add':
         print('\nNow type 3 numbers (What string, to what string, with what multiplier)\n')
         a, b, c = [float(x) for x in input('--> ').split()]
+        history.append(['add', [a, b, c]])
+        Mhistory.append(X)
         X.add(int(a) - 1, int(b) - 1, c)
     elif command == 'swap':
         print('\nNow type 2 numbers (Numbers of string that the program should swap)\n')
         a, b = [int(x) for x in input('--> ').split()]
+        history.append(['swap', [a, b]])
+        Mhistory.append(X)
         X.swap(a - 1, b - 1)
     elif command == 'mult' or command == 'multiply':
         print('\nNow type 2 numbers, what string to multiply and the actual multiplier\n')
         a, b = [float(x) for x in input('--> ').split()]
+        history.append(['multiply', [a, b]])
+        Mhistory.append(X)
         X.multiply(int(a) - 1, b)
     elif command == 'addunit' or command == '+unit':
         X.addunit()
     elif command == 'delunit' or command == '-unit':
         X.delunit()
+    elif command == 'history' or command == 'his':
+        for x in range(len(Mhistory)):
+            print(history[x])
+            Mhistory[x].prt()
+        qqq = input()
     elif command == 'exit':
         return
     console()
 
-console()
+if __name__ == '__main__':
+    Mhistory = []
+    history = []
+    console()
