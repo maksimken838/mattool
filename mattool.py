@@ -154,8 +154,8 @@ class Matrix:
                 print(str(self.matrix[i][j]).rjust(self.maxlength), end = ' ')
                 if j == self.rows - 1:
                     print(')', end = '\n')
-        s = []
-        s = self.det()
+        #s = []
+        #s = self.det()
         #print(s[0] + '\t|A| = ' + str(s[1]) + '\n')
         #print('\nYou still can use commands\n')
 
