@@ -136,28 +136,45 @@ class Matrix:
         return Matrix(self.strings - 1, self.strings - 1, submat)
 
     def prt(self):
-        for i in range(self.strings):
-            for j in range(self.rows):
-                if float(self.matrix[i][j]) == int(self.matrix[i][j]):
-                    self.matrix[i][j] = int(self.matrix[i][j])
-                else:
-                    self.matrix[i][j] = float(self.matrix[i][j])
 
-        self.deflength()
-        #print('This is your matrix')
-        for i in range(self.strings):
-            for j in range(self.rows):
-                if j == 0:
-                    print('(', end = ' ')
-                elif self.IsAugmented and j == self.strings:
-                    print('|', end = ' ')
-                print(str(self.matrix[i][j]).rjust(self.maxlength), end = ' ')
-                if j == self.rows - 1:
-                    print(')', end = '\n')
+        print(str(self))
+        #for i in range(self.strings):
+        #    for j in range(self.rows):
+        #        if float(self.matrix[i][j]) == int(self.matrix[i][j]):
+        #            self.matrix[i][j] = int(self.matrix[i][j])
+        #        else:
+        #            self.matrix[i][j] = float(self.matrix[i][j])
+
+        #self.deflength()
+        ##print('This is your matrix')
+        #for i in range(self.strings):
+        #    for j in range(self.rows):
+        #        if j == 0:
+        #            print('(', end = ' ')
+        #        elif self.IsAugmented and j == self.strings:
+        #            print('|', end = ' ')
+        #        print(str(self.matrix[i][j]).rjust(self.maxlength), end = ' ')
+        #        if j == self.rows - 1:
+        #            print(')', end = '\n')
         #s = []
         #s = self.det()
         #print(s[0] + '\t|A| = ' + str(s[1]) + '\n')
         #print('\nYou still can use commands\n')
+
+    def __str__(self):
+        self.deflength()
+        #s = ' '.join([s, '(', str(x).rjust(self.maxlength), ')\n'])[[f.maxlength), ')\n']) for x in y] for y in self.matrix]
+        s = ''
+        for column in self.matrix:
+            s += '( '
+            for i, x in enumerate(column):
+                if self.IsAugmented and i == self.strings:
+                    s += '| '
+                s += str(x).rjust(self.maxlength) + ' '
+            s += ')'
+            if self.matrix.index(column) != self.strings - 1:
+                s += '\n' 
+        return s
 
 
 def clear(name):
